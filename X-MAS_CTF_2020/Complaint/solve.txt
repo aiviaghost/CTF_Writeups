@@ -1,0 +1,10 @@
+eval $(/bin/bash)
+
+we have to manually redirect all commands to stdout (0)
+meaning we have to follow each command by >&0
+
+cat is not available, nor is head nor is tail nor is grep
+dd is available so:
+
+dd count=1000 bs=1 if=flag.txt >&0
+X-MAS{h3ll0_k4r3n-8819d787dd38a397}
