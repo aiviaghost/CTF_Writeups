@@ -2,6 +2,12 @@ from enigma.machine import EnigmaMachine # https://py-enigma.readthedocs.io/en/l
 from itertools import product
 from string import ascii_uppercase
 
+'''
+Given the name and the description mentioning an old cipher I figured they were using an enigma machine. 
+Everything except the initial ring positions was given so I googled for an enigma simulator. 
+Conveniently one of the first results was a simulator specifically for the wehrmacht model. 
+Then it was just a simple bruteforce (26^3 possible configurations) to find the correct starting positions. 
+'''
 
 with open("wehrmacht.txt", "r") as f:
     ciphertext = ''.join(f.readlines()).replace("\n", "").replace(" ", "")
