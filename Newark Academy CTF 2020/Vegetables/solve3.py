@@ -39,12 +39,5 @@ r.recvuntil("will swap the vegetable in position 0 with the vegetable in positio
 steps = conveyor_bubble(deque(veges), {i : set() for i in veges})
 r.sendline(' '.join(steps))
 
-'''
-print(r.recvline())
-print(r.recvline())
-print(r.recvline())
-print(r.recvline())
-print(r.recvline())
-'''
 r.recvuntil("\xf0\x9f\xa5\xac\xf0\x9f\xa5\x95\xf0\x9f\x8c\xbd\xf0\x9f\x8d\x86\xf0\x9f\xa5\xa6\xf0\x9f\xa5\x92\xf0\x9f\xa5\x91\xf0\x9f\x8d\x84 That's correct!! \xf0\x9f\xa5\xac\xf0\x9f\xa5\x95\xf0\x9f\x8c\xbd\xf0\x9f\x8d\x86\xf0\x9f\xa5\xa6\xf0\x9f\xa5\x92\xf0\x9f\xa5\x91\xf0\x9f\x8d\x84\n")
 print(r.recvline().decode('utf-8').strip())
