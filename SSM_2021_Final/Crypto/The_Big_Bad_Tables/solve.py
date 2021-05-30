@@ -13,8 +13,8 @@ Like so:
 
 We also note that the mode of operation is CBC (xor with previous ciphertext block). 
 
-The actual encryption function seems to be custom (at least I don't know what it is) but all the parts seem invertible and indeed they are. 
 All we have to do to is find the inverse function to all the parts of the algorithm and call them in reverse order. 
+(The actual code is something like AES but the s-boxes are weird, we can just "manually" invert them all. )
 Ez flag!
 In the end this is just a somewhat tricky implementation task, not really anything crazy crypto-wise. 
 """
