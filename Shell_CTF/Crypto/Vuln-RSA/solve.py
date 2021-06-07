@@ -1,6 +1,12 @@
 from pwn import remote
 from base64 import b64decode
 
+"""
+Standard byte-at-a-time ECB decryption. 
+See https://github.com/Bumbodosan/tenable2021/blob/main/Netrunner-Encryption/solve.py for a decent explanation. 
+Keep in mind that the ciphertext has the format E("sixteen byte AES") || E("shell{...}") so we need to skip the first 16 bytes. 
+"""
+
 def create_lookup(known_msg):
     lookup = {}
     for i in range(128):
