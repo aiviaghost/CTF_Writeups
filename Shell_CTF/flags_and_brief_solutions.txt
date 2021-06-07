@@ -1,0 +1,24 @@
+Crypto
+encoder: SHELL{P1Z_W3AR_4_M45K} (rot13)
+EASY-RSA: shell{switchin_to_asymmetric} (factordb)
+Subsi: SHELL{5U65T1TUT10N_C1PH3R} (make lookup table)
+Algoric-Shift: SHELL{TRAN5P051T10N_C1PH3R} (every third is out of order, fix it)
+BruteforceRSA: shellctf{k3y_s1ze_m@tter$} (factordb)
+arc-cipher: SHELL{S4SKU3_UCH1H4} (you can recreate the keystream since it only depends on length of flag, then it is just xor)
+PowerRSA: shell{entr0py_1s_th3_k3y_L9mlIsTtB557I/Nh4gqL87MxcugLIfZI} (p and q are close to each other, fermat factorization works, don't forget that it is UTF-16 and not standard UTF-8)
+Puny Factors: shellctf{pr1m3s_ar3_sup3r_int3re$tinG} (phi is only dependant on public modulus n)
+Vuln-AES: shell{kinda_sus} (byte-at-a-time ecb)
+
+Steganography
+Hidden inside: SHELL{NarUTO_Is_hokaGE} (lsb steganography)
+Cold Compress Inside: SHELL{CRazy_MosQUIto_nEEDS_odoMOS} (binwalk => the executable you get contains the flag in plaintext)
+Grass is green: SHELL{LonELY_Im_MR.lONely_YOU_are_MY_loVE} (just hard to see the text, it's visible in the original image though)
+
+Web
+Collide: SHELL{1nj3ct_&_coll1d3_9d25f1cfdeb38a404b6e8584bec7a319} (pass in arrays as get-parameters)
+
+Rev:
+check_flag: SHELL{bas1c_r3v} (just open the binary in vscode)
+sakuna: SHELL{M3L0v4l3nT_5hR1n3} (just read what the functions do in ghidra)
+keygen: SHELL{s3nb0nzakur4_k4g3y05h1} (just follow exactly what the python script says needs to be true, I automated that process)
+assembly: SHELL{0x117} (translated the assembly to C and just ran the C code)

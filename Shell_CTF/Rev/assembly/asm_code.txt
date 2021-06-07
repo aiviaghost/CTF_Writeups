@@ -1,0 +1,20 @@
+; DWORD PTR [ebp + 0x8] = arg1
+; DWORD PTR [ebp + 0xc] = arg2
+
+fun1:
+	<+0>:	push   ebp
+	<+1>:	mov    ebp, esp
+	<+3>:	sub    esp, 0x10
+	<+6>:	mov    eax, DWORD PTR [ebp + 0xc] ; copy arg2 to eax
+	<+9>:	mov    DWORD PTR [ebp - 0x4], eax ; copy eax to temp1
+	<+12>:	mov    eax, DWORD PTR [ebp + 0x8] ; copy arg1 to eax
+	<+15>:	mov    DWORD PTR [ebp - 0x8], eax ; copy eax to temp2
+	<+18>:	jmp    <fun1 +28> ; jump to +28, i.e the cmp instruction
+	; the next 4 lines form a "loop", a "for loop" for example
+    <+20>:	add    DWORD PTR [ebp - 0x4], 0x7 ; add 0x7 to temp1
+	<+24>:	add    DWORD PTR [ebp - 0x8], 0x70 ; add 0x70 to temp2
+	<+28>:	cmp    DWORD PTR [ebp - 0x8], 0x227 ; compare temp2 to 0x227
+	<+35>:	jle    <fun1 +20> ; jump if result above is that temp2 <= 0x227
+	<+37>:	mov    eax, DWORD PTR [ebp - 0x4] ; copy temp1 to eax
+	<+40>:	leave  
+	<+41>:	ret ; eax is the return value, so fun1 returns the final value of temp1
