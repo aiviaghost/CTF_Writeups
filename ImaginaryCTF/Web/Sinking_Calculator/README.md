@@ -45,7 +45,7 @@ My initial exploit looked like this:
 request["application"]["__globals__"]["__builtins__"]["__import__"]('os')["popen"]("cat flag | xxd -b")["read"]()
 ```
 
-What a mess! This script accesses the function ```popen``` to gain shell access to read the flag via cat and then pipe the output to xxd. With the -b option xxd will print the content of the file in binary, passing the numeric requirement mentioned earlier. But this is 113 characters long, no good. An obvious optimization is to use dot notation instead of indexing via strings, like this:
+What a mess! This script accesses the function ```popen``` to gain shell access to read the flag via cat and then pipe the output to ```xxd```. With the ```-b``` option ```xxd``` will print the content of the file in binary, passing the numeric requirement mentioned earlier. But this is 113 characters long, no good. An obvious optimization is to use dot notation instead of indexing via strings, like this:
 
 ```python
 request.application.__globals__.__builtins__.__import__("os").popen("cat flag | xxd -b").read()
@@ -63,7 +63,7 @@ At 99 characters it is actually worse than the previous exploit but I'm includin
 self.__init__.__globals__.__builtins__.__import__("os").popen("cat flag | xxd -b").read()
 ```
 
-I felt a little stuck at this point with the process of finding shorter paths to the ```os``` module so I played a bit with the command to read the flag and found two neat little tricks. There is a command similar to cat that also prints line numbers called "nl", one character shorter than cat. We can also use "*" instead of specifically reading just the file "flag", saving us 3 characters. 
+I felt a little stuck at this point with the process of finding shorter paths to the ```os``` module so I played a bit with the command to read the flag and found two neat little tricks. There is a command similar to cat that also prints line numbers called ```nl```, one character shorter than ```cat```. We can also use "*" instead of specifically reading just the file "flag", saving us 3 characters. 
 
 ```python
 self.__init__.__globals__.__builtins__.__import__("os").popen("nl * | xxd -b").read()
@@ -75,7 +75,7 @@ Only 5 characters more to go! To cut off the last few characters I remembered th
 config.__class__.__init__.__globals__.os.popen('cat flag | xxd -b').read()
 ```
 
-74 characters! We paste it into the input field and... no flag :(. Why? Well the assumption this exploit relies on is that xxd is installed, which is not the case on the challenge server. Is all hope lost? No. After googling a bit for alternatives to xxd I found this helpful Stackoverflow post https://stackoverflow.com/questions/1765311/how-to-view-files-in-binary-from-bash mentioning od. With the command od -b we convert the contents to octal, that is base 8 (It's also conveniently one character shorter than xxd). We will have to do some post processing though because od produces 7 character long line numbers which we have to filter out to read the actual flag, but that is easy enough to automate. Turns out we can also skip accessing the attribute ```__class__``` and go directly to ```__init__```. The working exploit, all tricks included, is the following 59 character exploit. 
+74 characters! We paste it into the input field and... no flag :(. Why? Well the assumption this exploit relies on is that ```xxd``` is installed, which is not the case on the challenge server. Is all hope lost? No. After googling a bit for alternatives to ```xxd``` I found this helpful Stackoverflow post https://stackoverflow.com/questions/1765311/how-to-view-files-in-binary-from-bash mentioning ```od```. With the command ```od -b``` we convert the contents to octal, that is base 8 (It's also conveniently one character shorter than ```xxd```). We will have to do some post processing though because od produces 7 character long line numbers which we have to filter out to read the actual flag, but that is easy enough to automate. Turns out we can also skip accessing the attribute ```__class__``` and go directly to ```__init__```. The working exploit, all tricks included, is the following 59 character exploit. 
 
 ```python
 config.__init__.__globals__.os.popen('nl * | od -b').read()
@@ -83,7 +83,7 @@ config.__init__.__globals__.os.popen('nl * | od -b').read()
 
 Pasting this into the input field gets us the flag: ictf{this_flag_has_three_interesting_properties_it_has_no_numbers_or_dashes_it_is_quite_long_and_it_is_quite_scary}
 
-Can we do any better though length wise? Quite a lot actually! Firstly I completedy missed the fact that od displays the content in base 8 by default, no need for the -b option (Looking back I really don't know how this happened, I guess I just assumed these sorts of tools usually use hex by default). Another obvious thing to do is to just call od * instead of piping the output from nl or cat (Again I don't understand how I missed this). I also talked to one of the organizers after the CTF who pointed out that instead of using ```config.__init__``` we can use ```g.pop```. I haven't confirmed this myself except that locally I can't access the ```os``` module through this method. This might be different from program to program or system to system, as seems to be the case regarding which modules can be accessed via ```__globals__``` and more specifically which object ```__globals__``` is accessed via. In any case, assuming the organizer I talked with was correct, the following is the shortest exloit so far. 
+Can we do any better though length wise? Quite a lot actually! Firstly I completedy missed the fact that od displays the content in base 8 by default, no need for the ```-b``` option (Looking back I really don't know how this happened, I guess I just assumed these sorts of tools usually use hex by default). Another obvious thing to do is to just call ```od *``` instead of piping the output from ```nl``` or ```cat``` (Again I don't understand how I missed this). I also briefly talked to one of the organizers after the CTF who pointed out that instead of using ```config.__init__``` we can use ```g.pop```. I haven't confirmed this myself except that locally I can't access the ```os``` module through this method. This might be different from program to program or system to system, as seems to be the case regarding which modules can be accessed via ```__globals__``` and more specifically which object ```__globals__``` is accessed via. In any case, assuming the organizer I talked with was correct, the following is the shortest exloit so far. 
 
 ```python
 g.pop.__globals__.os.popen("od *").read()
