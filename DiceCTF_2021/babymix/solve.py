@@ -1,10 +1,6 @@
 from z3 import *
 
-vec = ""
-for i in range(0, 0x16):
-    vec += "pw[{}] ".format(i)
-
-param_1 = BitVecs(vec, 8)
+param_1 = BitVecs(" ".join(f"pw[{i}]" for i in range(0x16)), 8)
 
 s = Solver()
 
@@ -43,8 +39,7 @@ if (s.check() == sat):
     print(m)
     out = ""
     for i in param_1:
-        if str(i):
-            out += chr(m[i].as_long() % 128) # notice it is outside ascii range unless "% 128"
+        out += chr(m[i].as_long() % 128) # notice it is outside ascii range unless "% 128"
     print("dice{" + out + "}")
 
 # dice{m1x_it_4ll_t0geth3r!1!}
